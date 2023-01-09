@@ -42,8 +42,9 @@ then
 fi
 
 echo "=== Generate crontab.txt ==="
-export CRONTAB=/app/crontab.txt
+SCHEDULE="${SCHEDULE:-0 0 */24 * * * *}"
 echo "${SCHEDULE};/app/backup.sh" > /app/crontab.txt
+export CRONTAB=/app/crontab.txt
 
 echo "=== Chown ownership ==="
 chown -R dockerus:dockerus /app "$BACKUP_DIR" /hooks
