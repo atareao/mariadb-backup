@@ -1,5 +1,4 @@
-![Docker pulls](https://img.shields.io/docker/pulls/prodrigestivill/postgres-backup-local)
-![GitHub actions](https://github.com/prodrigestivill/docker-postgres-backup-local/actions/workflows/ci.yml/badge.svg?branch=main)
+![Docker pulls](https://img.shields.io/docker/pulls/atareao/mariadb-backup)
 
 # mariadb-backup
 
@@ -64,7 +63,7 @@ services:
       MARIADB_USER: usuario
       MARIADB_PASSWORD: contraseña
       SCHEDULE: "* * 1/24 * * * *"
-      BACKUP_KEEP_MINS: 5
+      BACKUP_KEEP_MINS: 1440
       BACKUP_KEEP_DAYS: 7
       BACKUP_KEEP_WEEKS: 4
       BACKUP_KEEP_MONTHS: 6
@@ -143,33 +142,14 @@ By default this container makes daily backups, but you can start a manual backup
 This script as example creates one backup as the running user and saves it the working folder.
 
 ```sh
-docker run --rm -v "$PWD:/backups" -u "$(id -u):$(id -g)" -e POSTGRES_HOST=postgres -e POSTGRES_DB=dbname -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password  prodrigestivill/postgres-backup-local /backup.sh
 ```
-
-### Automatic Periodic Backups
-
-You can change the `SCHEDULE` environment variable in `-e SCHEDULE="@daily"` to alter the default frequency. Default is `daily`.
-
-More information about the scheduling can be found [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules).
-
-Folders `daily`, `weekly` and `monthly` are created and populated using hard links to save disk space.
-
 ## Restore examples
 
 Some examples to restore/apply the backups.
-
-### Restore using the same container
-
-To restore using the same backup container, replace `$BACKUPFILE`, `$CONTAINER`, `$USERNAME` and `$DBNAME` from the following command:
-
-```sh
-docker exec --tty --interactive $CONTAINER /bin/sh -c "zcat $BACKUPFILE | psql --username=$USERNAME --dbname=$DBNAME -W"
-```
 
 ### Restore using a new container
 
 Replace `$BACKUPFILE`, `$VERSION`, `$HOSTNAME`, `$PORT`, `$USERNAME` and `$DBNAME` from the following command:
 
 ```sh
-docker run --rm --tty --interactive -v $BACKUPFILE:/tmp/backupfile.sql.gz postgres:$VERSION /bin/sh -c "zcat /tmp/backupfile.sql.gz | psql --host=$HOSTNAME --port=$PORT --username=$USERNAME --dbname=$DBNAME -W"
 ```
