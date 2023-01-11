@@ -142,6 +142,7 @@ By default this container makes daily backups, but you can start a manual backup
 This script as example creates one backup as the running user and saves it the working folder.
 
 ```sh
+docker run --rm --init -v "$PWD/backup:/backup" -v "$PWD/hooks:/hooks" --network mariadb_internal -e MARIADB_DB=ejemplo -e MARIADB_HOST=mariadb -e MARIADB_USER=usuario -e MARIADB_PASSWORD=contraseña atareao/mariadb-backup /app/backup.sh
 ```
 ## Restore examples
 
