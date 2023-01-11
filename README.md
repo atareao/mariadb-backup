@@ -150,7 +150,8 @@ Some examples to restore/apply the backups.
 
 ### Restore using a new container
 
-Replace `$BACKUPFILE`, `$VERSION`, `$HOSTNAME`, `$PORT`, `$USERNAME` and `$DBNAME` from the following command:
+Replace `$NETWORK`, `$HOST`, `$USER`, `$PASSWORD` `$BACKUP` and `$DBNAME` from the following command:
 
 ```sh
+docker run --rm --init -v "$PWD/backup:/backup" -v "$PWD/hooks:/hooks" --network $NETWORK atareao/mariadb-backup /bin/sh -c "zcat /backup/last/$BACKUP | mysql --host=$HOST --user=$USER --password=$PASSWORD $DBNAME"
 ```
