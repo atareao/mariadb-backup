@@ -142,8 +142,38 @@ By default this container makes daily backups, but you can start a manual backup
 This script as example creates one backup as the running user and saves it the working folder.
 
 ```sh
-docker run --rm --init -v "$PWD/backup:/backup" -v "$PWD/hooks:/hooks" --network mariadb_internal -e MARIADB_DB=ejemplo -e MARIADB_HOST=mariadb -e MARIADB_USER=usuario -e MARIADB_PASSWORD=contraseña atareao/mariadb-backup /app/backup.sh
+docker run --rm --init -v "$PWD/backup:/cronitab/backup" -v "$PWD/hooks:/hooks" --network mariadb_internal -e MARIADB_DB=ejemplo -e MARIADB_HOST=mariadb -e MARIADB_USER=usuario -e MARIADB_PASSWORD=contraseña atareao/mariadb-backup /app/backup.sh
+
+You can use a simple script like this one,
+
+```bash
+#!/bin/bash
+
+set -o allexport
+source .env
+set +o allexport
+
+NETWORK=directory_internal
+
+docker run  --rm \
+            --init \
+            -v "$PWD/backup:/cronitab/backup" \
+            -v "$PWD/hooks:/hooks" \
+            --network $NETWORK \
+            -e MARIADB_DB=${DB_NAME} \
+            -e MARIADB_HOST=mariadb \
+            -e MARIADB_USER=${DB_USER} \
+            -e MARIADB_PASSWORD=${DB_PASSWORD} \
+            -e BACKUP_KEEP_MINS=${BACKUP_KEEP_MINS} \
+            -e BACKUP_KEEP_DAYS=${BACKUP_KEEP_DAYS} \
+            -e BACKUP_KEEP_WEEKS=${BACKUP_KEEP_WEEKS} \
+            -e BACKUP_KEEP_MONTHS=${BACKUP_KEEP_MONTHS} \
+            atareao/mariadb-backup /backup.sh```
 ```
+
+Change the internal directory
+
+
 ## Restore examples
 
 Some examples to restore/apply the backups.

@@ -2,7 +2,7 @@
 set -eo
 
 HOOKS_DIR="/hooks"
-BACKUP_DIR=${BACKUP_DIR:-/backup}
+BACKUP_DIR=${BACKUP_DIR:-/cronitab/backup}
 BACKUP_SUFFIX=${BACKUP_SUFFIX:-.sql.gz}
 KEEP_MINS=${BACKUP_KEEP_MINS:-1440}
 KEEP_DAYS=${BACKUP_KEEP_DAYS:-7}
@@ -50,10 +50,13 @@ if [ -d "${HOOKS_DIR}" ]; then
 fi
 
 #Initialize dirs
-mkdir -p "${BACKUP_DIR}/last/" \
-         "${BACKUP_DIR}/daily/" \
-         "${BACKUP_DIR}/weekly/" \
-         "${BACKUP_DIR}/monthly/"
+mkdir -p "${BACKUP_DIR}/last"
+mkdir -p "${BACKUP_DIR}/daily"
+mkdir -p "${BACKUP_DIR}/weekly"
+mkdir -p "${BACKUP_DIR}/monthly"
+
+# Print date
+echo "=== Doing backup at $(date) ==="
 
 #Loop all databases
 for DB in ${MARIADB_DBS}; do
