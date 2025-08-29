@@ -54,8 +54,8 @@ services:
     networks:
       - internal
     volumes:
-      - ./hooks:/hooks
-      - ./backup:/backup
+      - ./hooks:/cronitab/hooks
+      - ./backup:/cronitab/backup
     environment:
       MARIADB_DB: ejemplo
       MARIADB_HOST: mariadb
@@ -78,7 +78,7 @@ networks:
 
 | env variable | description |
 |--|--|
-| BACKUP_DIR | Directory to save the backup at. Defaults to `/backup`. |
+| BACKUP_DIR | Directory to save the backup at. Defaults to `/cronitab/backup`. |
 | BACKUP_SUFFIX | Filename suffix to save the backup. Defaults to `.sql.gz`. |
 | BACKUP_KEEP_DAYS | Number of daily backups to keep before removal. Defaults to `7`. |
 | BACKUP_KEEP_WEEKS | Number of weekly backups to keep before removal. Defaults to `4`. |
